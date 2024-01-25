@@ -16,11 +16,11 @@ public class GatewayConfig {
         return builder.routes()
                 .route("patients_all_route", r -> r
                         .path("/patients/all")
-                        .uri("http://localhost:8080")) // l'URL du microservice backend
+                        .uri("http://localhost:8082")) // l'URL du microservice backend
 
                 .route("patients_id_route", r -> r
                         .path("/patients/{patientId}")
-                        .uri("http://localhost:8080")) // l'URL du microservice backend
+                        .uri("http://localhost:8082")) // l'URL du microservice backend
                 .build();
     }
 }
