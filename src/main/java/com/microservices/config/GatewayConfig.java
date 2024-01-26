@@ -8,19 +8,25 @@ import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 
 @Configuration
 public class GatewayConfig {
-	
-	// Définir des routes personnalisées pour diriger le trafic vers différents microservices
-	
+
     @Bean
     public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
         return builder.routes()
                 .route("patients_all_route", r -> r
-                        .path("/patients/all")
-                        .uri("http://172.17.0.2:8082")) // l'URL du microservice backend
+                        .path("/patients/**")
+                        .uri("http://localhost:8082"))
 
-                .route("patients_id_route", r -> r
-                        .path("/patients/{patientId}")
-                        .uri("http://172.17.0.2:8082")) // l'URL du microservice backend
+                .route("update_adresse_route", r -> r
+                        .method("PUT")
+                        .and()
+                        .path("/patients/**")
+                        .uri("http://172.17.0.2:8082"))
+           
+                .route("add_patient_route", r -> r
+                        .method("POST")
+                        .and()
+                        .path("/patients/**")
+                        .uri("http://172.17.0.2:8082"))
                 .build();
     }
 }
