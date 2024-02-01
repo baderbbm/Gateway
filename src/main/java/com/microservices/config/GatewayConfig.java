@@ -11,6 +11,7 @@ public class GatewayConfig {
     @Bean
     public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
         return builder.routes()
+        		// Routes pour le microservice Patient
                 .route("patients_all_route", r -> r
                         .path("/patients/**")
                         .uri("http://localhost:8082"))
@@ -28,6 +29,11 @@ public class GatewayConfig {
                         .and()
                         .path("/patients/**")
                         .uri("http://localhost:8082"))
+                
+                // Route pour le microservice Medecin
+                .route("medecin_notes_route", r -> r
+                        .path("/medecin/**")
+                        .uri("http://localhost:8083"))
                 .build();
     }
 }
