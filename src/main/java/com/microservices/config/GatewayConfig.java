@@ -14,25 +14,30 @@ public class GatewayConfig {
         		// Routes pour le microservice Patient
                 .route("patients_all_route", r -> r
                         .path("/patients/**")
-                        .uri("http://172.17.0.3:8082"))
+                    //    .uri("http://172.17.0.5:8082"))
+                        .uri("http://localhost:8082"))
 
                 .route("update_adresse_route", r -> r
                         .method("PUT")
                         .and()
                         .path("/patients/**")
-                        .uri("http://172.17.0.3:8082"))
+                      //  .uri("http://172.17.0.5:8082"))
+                        .uri("http://localhost:8082"))
 
            
                 .route("add_patient_route", r -> r
                         .method("POST")
                         .and()
                         .path("/patients/**")
-                        .uri("http://172.17.0.3:8082"))
+                       // .uri("http://172.17.0.5:8082"))
+                        .uri("http://localhost:8082"))
                 
                 // Route pour le microservice Medecin
                 .route("medecin_notes_route", r -> r
                         .path("/medecin/**")
-                        .uri("http://172.17.0.5:8083"))
+                     //   .uri("http://172.17.0.4:8083"))
+                        .uri("http://localhost:8083"))
+                
                 .build();
     }
 }
