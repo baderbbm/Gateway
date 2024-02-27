@@ -13,17 +13,14 @@ public class AuthenticationController {
 	
     @PostMapping("/login")
     public ResponseEntity<String> authenticate(@RequestParam String username, @RequestParam String password) {
-    	 System.out.println("je suis la OK");
       
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         
         if (authentication != null && authentication.isAuthenticated()) {
-	        System.out.println("OK");
 
             // Authentification réussie, renvoyer une réponse de redirection vers "/afficher-patients"
             return ResponseEntity.status(HttpStatus.FOUND).header("Location", "/afficher-patients").build();
         } else {
-	        System.out.println("NOT OK");
 
             // Échec de l'authentification, renvoyer une réponse avec un code d'erreur
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Échec de l'authentification");
