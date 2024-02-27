@@ -23,8 +23,6 @@ public class SecurityConfig {
     @Bean
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
     	
-   	 System.out.println("SecurityWebFilterChain");
-
         http.csrf().disable()
             .authorizeExchange()
                .pathMatchers("/login").permitAll()
@@ -43,9 +41,7 @@ public class SecurityConfig {
    
     @Bean
     public MapReactiveUserDetailsService userDetailsService() {
-    	
-      	 System.out.println("MapReactiveUserDetailsService");
-    	
+    	    	
         PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
         UserDetails org = User.withUsername("org")
                 .password(encoder.encode("org"))
