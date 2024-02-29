@@ -43,7 +43,7 @@ public class GatewayConfig {
                         .path("/diabetes-risk/**")
                       //  .uri("http://192.168.1.6:8084")) 
                         .uri("http://localhost:8084")) 
-                
+
                 .build();
     }
 }
