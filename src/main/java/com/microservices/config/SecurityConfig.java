@@ -20,37 +20,30 @@ import org.springframework.http.HttpStatus;
 @EnableWebFluxSecurity
 public class SecurityConfig {
 
-    @Bean
-    public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
-    	
-        http.csrf().disable()
-            .authorizeExchange()
-               .pathMatchers("/login").permitAll()
-               .pathMatchers("/afficher-patients").hasAnyAuthority("ORGANISATEUR", "PRATICIEN")
-                .pathMatchers("/afficher-details/**").hasAnyAuthority("ORGANISATEUR", "PRATICIEN")
-                .pathMatchers("/modifier-adresse/**", "/modifier-numero/**", "/ajouter-patient").hasAnyAuthority("ORGANISATEUR")
-                .pathMatchers("/ajouter-note/**").hasAnyAuthority("PRATICIEN")
-                .pathMatchers("/**").authenticated()
-                .anyExchange().authenticated()
-                .and()
-            .httpBasic()
-                .authenticationEntryPoint(new HttpStatusServerEntryPoint(HttpStatus.UNAUTHORIZED));
+	@Bean
+	public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
 
-        return http.build();
-    }
-   
-    @Bean
-    public MapReactiveUserDetailsService userDetailsService() {
-    	    	
-        PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-        UserDetails org = User.withUsername("org")
-                .password(encoder.encode("org"))
-                .roles("ORGANISATEUR")
-                .build();
-        UserDetails pra = User.withUsername("pra")
-                .password(encoder.encode("pra"))
-                .roles("PRATICIEN")
-                .build();
-        return new MapReactiveUserDetailsService(org, pra);
-    }   
+		System.out.println("SecurityWebFilterChain");
+
+		http.csrf().disable().authorizeExchange().pathMatchers("/afficher-patients")
+				.hasAnyAuthority("ORGANISATEUR", "PRATICIEN").pathMatchers("/afficher-details/**")
+				.hasAnyAuthority("ORGANISATEUR", "PRATICIEN")
+				.pathMatchers("/modifier-adresse/**", "/modifier-numero/**", "/ajouter-patient")
+				.hasAnyAuthority("ORGANISATEUR").pathMatchers("/ajouter-note/**").hasAnyAuthority("PRATICIEN")
+				.pathMatchers("/**").authenticated().anyExchange().authenticated().and().httpBasic()
+				.authenticationEntryPoint(new HttpStatusServerEntryPoint(HttpStatus.UNAUTHORIZED));
+
+		return http.build();
+	}
+
+	@Bean
+	public MapReactiveUserDetailsService userDetailsService() {
+
+		System.out.println("MapReactiveUserDetailsService");
+
+		PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+		UserDetails org = User.withUsername("org").password(encoder.encode("org")).roles("ORGANISATEUR").build();
+		UserDetails pra = User.withUsername("pra").password(encoder.encode("pra")).roles("PRATICIEN").build();
+		return new MapReactiveUserDetailsService(org, pra);
+	}
 }
