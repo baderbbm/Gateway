@@ -24,10 +24,10 @@ public class SecurityConfig {
 
 		http.csrf().disable().authorizeExchange()
 		        .pathMatchers(HttpMethod.POST, "/patients/**").hasAnyAuthority("ROLE_ORGANISATEUR")
-				.pathMatchers(HttpMethod.GET,"/patients/**").hasAnyAuthority("ROLE_ORGANISATEUR", "ROLE_PRATICIEN", "ROLE_TECHNIQUE")
-				.pathMatchers("/medecin/notes/**").hasAnyAuthority("ROLE_ORGANISATEUR", "ROLE_PRATICIEN", "ROLE_TECHNIQUE")			
-				.pathMatchers("/**").authenticated().and().httpBasic()
-				.authenticationEntryPoint(new HttpStatusServerEntryPoint(HttpStatus.UNAUTHORIZED));
+			.pathMatchers(HttpMethod.GET,"/patients/**").hasAnyAuthority("ROLE_ORGANISATEUR", "ROLE_PRATICIEN", "ROLE_TECHNIQUE")
+			.pathMatchers("/medecin/notes/**").hasAnyAuthority("ROLE_ORGANISATEUR", "ROLE_PRATICIEN", "ROLE_TECHNIQUE")			
+			.pathMatchers("/**").authenticated().and().httpBasic()
+			.authenticationEntryPoint(new HttpStatusServerEntryPoint(HttpStatus.UNAUTHORIZED));
 
 		return http.build();
 	}
