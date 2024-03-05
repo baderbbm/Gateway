@@ -7,13 +7,11 @@ import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.core.userdetails.MapReactiveUserDetailsService;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.authentication.HttpStatusServerEntryPoint;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 
 @Configuration
@@ -22,15 +20,13 @@ public class SecurityConfig {
 
 	@Bean
 	public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
+		System.out.println("BEAN 1");
 
-		System.out.println("SecurityWebFilterChain");
-
-		http.csrf().disable().authorizeExchange().pathMatchers("/afficher-patients")
-				.hasAnyAuthority("ORGANISATEUR", "PRATICIEN").pathMatchers("/afficher-details/**")
-				.hasAnyAuthority("ORGANISATEUR", "PRATICIEN")
-				.pathMatchers("/modifier-adresse/**", "/modifier-numero/**", "/ajouter-patient")
-				.hasAnyAuthority("ORGANISATEUR").pathMatchers("/ajouter-note/**").hasAnyAuthority("PRATICIEN")
-				.pathMatchers("/**").authenticated().anyExchange().authenticated().and().httpBasic()
+		http.csrf().disable().authorizeExchange()
+		        .pathMatchers(HttpMethod.POST, "/patients/**").hasAnyAuthority("ROLE_ORGANISATEUR")
+				.pathMatchers(HttpMethod.GET,"/patients/**").hasAnyAuthority("ROLE_ORGANISATEUR", "ROLE_PRATICIEN", "ROLE_TECHNIQUE")
+				.pathMatchers("/medecin/notes/**").hasAnyAuthority("ROLE_ORGANISATEUR", "ROLE_PRATICIEN", "ROLE_TECHNIQUE")			
+				.pathMatchers("/**").authenticated().and().httpBasic()
 				.authenticationEntryPoint(new HttpStatusServerEntryPoint(HttpStatus.UNAUTHORIZED));
 
 		return http.build();
@@ -38,12 +34,20 @@ public class SecurityConfig {
 
 	@Bean
 	public MapReactiveUserDetailsService userDetailsService() {
-
-		System.out.println("MapReactiveUserDetailsService");
+		
+		System.out.println("BEAN 2");
 
 		PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 		UserDetails org = User.withUsername("org").password(encoder.encode("org")).roles("ORGANISATEUR").build();
 		UserDetails pra = User.withUsername("pra").password(encoder.encode("pra")).roles("PRATICIEN").build();
-		return new MapReactiveUserDetailsService(org, pra);
+		UserDetails tech = User.withUsername("diabete").password(encoder.encode("diabete")).roles("TECHNIQUE").build();
+		return new MapReactiveUserDetailsService(org, pra, tech);
 	}
+	
+	@Bean
+    public RolesExtractionFilter rolesExtractionFilter() {
+	    System.out.println("BEAN 3 "+new RolesExtractionFilter());
+
+        return new RolesExtractionFilter();
+    }
 }
