@@ -16,14 +16,6 @@ public class GatewayConfig {
                         .path("/patients/**")
                       //  .uri("http://192.168.1.4:8082"))
                        .uri("http://localhost:8082"))
-
-                .route("update_adresse_route", r -> r
-                        .method("PUT")
-                        .and()
-                        .path("/patients/**")
-                     //   .uri("http://192.168.1.4:8082"))
-                        .uri("http://localhost:8082"))
-
            
                 .route("add_patient_route", r -> r
                         .method("POST")
