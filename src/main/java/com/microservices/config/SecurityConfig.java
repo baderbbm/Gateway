@@ -20,23 +20,18 @@ public class SecurityConfig {
 
 	@Bean
 	public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
-		System.out.println("BEAN 1");
-
 		http.csrf().disable().authorizeExchange()
 		        .pathMatchers(HttpMethod.POST, "/patients/**").hasAnyAuthority("ROLE_ORGANISATEUR")
-			.pathMatchers(HttpMethod.GET,"/patients/**").hasAnyAuthority("ROLE_ORGANISATEUR", "ROLE_PRATICIEN", "ROLE_TECHNIQUE")
-			.pathMatchers("/medecin/notes/**").hasAnyAuthority("ROLE_ORGANISATEUR", "ROLE_PRATICIEN", "ROLE_TECHNIQUE")			
-			.pathMatchers("/**").authenticated().and().httpBasic()
-			.authenticationEntryPoint(new HttpStatusServerEntryPoint(HttpStatus.UNAUTHORIZED));
+				.pathMatchers(HttpMethod.GET,"/patients/**").hasAnyAuthority("ROLE_ORGANISATEUR", "ROLE_PRATICIEN", "ROLE_TECHNIQUE")
+				.pathMatchers("/medecin/notes/**").hasAnyAuthority("ROLE_ORGANISATEUR", "ROLE_PRATICIEN", "ROLE_TECHNIQUE")			
+				.pathMatchers("/**").authenticated().and().httpBasic()
+				.authenticationEntryPoint(new HttpStatusServerEntryPoint(HttpStatus.UNAUTHORIZED));
 
 		return http.build();
 	}
 
 	@Bean
 	public MapReactiveUserDetailsService userDetailsService() {
-		
-		System.out.println("BEAN 2");
-
 		PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 		UserDetails org = User.withUsername("org").password(encoder.encode("org")).roles("ORGANISATEUR").build();
 		UserDetails pra = User.withUsername("pra").password(encoder.encode("pra")).roles("PRATICIEN").build();
@@ -46,8 +41,6 @@ public class SecurityConfig {
 	
 	@Bean
     public RolesExtractionFilter rolesExtractionFilter() {
-	    System.out.println("BEAN 3 "+new RolesExtractionFilter());
-
         return new RolesExtractionFilter();
     }
 }
