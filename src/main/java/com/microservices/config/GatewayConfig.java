@@ -14,27 +14,27 @@ public class GatewayConfig {
         		// Routes pour le microservice Patient
                 .route("patients_all_route", r -> r
                         .path("/patients/**")
-                      //  .uri("http://192.168.1.4:8082"))
-                       .uri("http://localhost:8082"))
+                        .uri("http://192.168.1.4:8082"))
+                    //   .uri("http://localhost:8082"))
            
                 .route("add_patient_route", r -> r
                         .method("POST")
                         .and()
                         .path("/patients/**")
-                       // .uri("http://192.168.1.4:8082"))
-                       .uri("http://localhost:8082"))
+                        .uri("http://192.168.1.4:8082"))
+                      // .uri("http://localhost:8082"))
                 
                 // Route pour le microservice Medecin
                 .route("medecin_notes_route", r -> r
                         .path("/medecin/**")
-                       // .uri("http://192.168.1.5:8083"))
-                        .uri("http://localhost:8083"))
+                        .uri("http://192.168.1.5:8083"))
+                       // .uri("http://localhost:8083"))
                 
              // Route pour le microservice de calcul du risque de diabète
                 .route("diabetes_risk_route", r -> r
                         .path("/diabetes-risk/**")
-                      //  .uri("http://192.168.1.6:8084")) 
-                        .uri("http://localhost:8084")) 
+                        .uri("http://192.168.1.6:8084")) 
+                       // .uri("http://localhost:8084")) 
 
                 .build();
     }
